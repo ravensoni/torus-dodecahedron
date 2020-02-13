@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>MDN Games: Three.js demo</title>
+      <style media="screen">
+         body{
+            margin:0;
+            padding:0;
+            overflow:hidden;
+         }
+         canvas{
+            width:100%;
+            height:100%;
+         }
+         a{
+            position:absolute;
+            z-index:1;
+            width:100%;
+            text-align:center;
+            color:black;
+            font-family:georgia;
+            font-size:2rem;
+            padding-top:30px;
+         }
+         a:hover{
+            color:white;
+         }
+         .blog{
+            text-align:center;
+            padding-top:90px;
+         }
+      </style>
+   </head>
+   <body>
+      <a class="blog" href="https://ray3dc.blogspot.com/" target="_blank">ray3dc</a>
+      <a href="dodecahedron.html">DODECAHEDRON</a>
+      <script src="three.min.js"></script>
+      <script type="text/javascript">
+
+         var WIDTH = window.innerWidth;
+         var HEIGHT = window.innerHeight;
+
+         var renderer = new THREE.WebGLRenderer({antialias:true});
+         renderer.setSize(WIDTH, HEIGHT);
+         renderer.setClearColor(0xADDFEE, 1);
+         document.body.appendChild(renderer.domElement);
+
+         var scene = new THREE.Scene();
+
+         var camera = new THREE.PerspectiveCamera(93, WIDTH/HEIGHT, 1, 10000);
+         camera.position.z = 50;
+         scene.add(camera);
+
+         //torus //phong
+         var torusGeometry = new THREE.TorusGeometry(9, 2, 12, 12);
+         var phongMaterial = new THREE.MeshPhongMaterial({color: 0xFF9500});
+         var torus = new THREE.Mesh(torusGeometry, phongMaterial);
+         torus.position.x = 0;
+         scene.add(torus);
+
+         // dodecahedron
+         // var dodecahedronGeometry = new THREE.DodecahedronGeometry(7);
+         // var lambertMaterial = new THREE.MeshLambertMaterial({color: 0xEAEFF2});
+         // var dodecahedron = new THREE.Mesh(dodecahedronGeometry, lambertMaterial);
+         // scene.add(dodecahedron);
+
+         // The new objects currently just look black.
+         // To have both the Lambert, Phong materials properly visible, need to introduce the source of light.
+
+         // Light
+         // There are various types of light sources available in Three.js.
+         // The most basic is 'PointLight', which works like a FlashLight, shining a spotLight in a defined direction.
+         // var light = new THREE.PointLight(0xFFFFFF);
+         var light = new THREE.SpotLight(0xFFFFFF);
+         light.position.set(-10, 15, 50);
+         scene.add(light);
+
+         // scaling
+         var t = 0;
+
+         function render(){
+            requestAnimationFrame(render);
+            // camera.rotation.x += 1;
+            // camera.rotation.y += 1;
+            // camera.rotation.z += 1;
+            t += 0.01;
+            torus.scale.z = Math.abs(Math.sin(t));
+            torus.rotation.x += 0.01;
+            torus.rotation.y += 0.001;
+            // torus.rotation.z += 1;
+            // dodecahedron.rotation.x += 0.1;
+            renderer.render(scene, camera)
+         }
+         render();
+
+      </script>
+   </body>
+</html>
